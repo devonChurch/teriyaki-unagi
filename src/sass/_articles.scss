@@ -1,0 +1,45 @@
+
+
+.articles {
+    background: red;
+
+    &__month {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        margin: auto;
+        max-width: 60rem;
+    }
+}
+
+.article {
+    $padding: 1.25rem;
+    $spacer: $padding / 2;
+    $block: 33.3333333%;
+
+    border: 1px solid black;
+    font-family: 'BLOKKNeue';
+    line-height: 1.15;
+    padding: $padding;
+    width: $block;
+    word-spacing: -1rem;
+
+    &--long {
+        width: $block * 2;
+    }
+
+    &--tall {
+        height: 800px;
+    }
+
+    &__thumbnail {
+        width: 100px;
+    }
+
+    &__more {
+        $offset: $padding * -1;
+        display: block;
+        margin: 0 $offset $offset $offset;
+        width: calc(100% + (#{$padding} * 2));
+    }
+}
