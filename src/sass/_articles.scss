@@ -1,7 +1,6 @@
-
-
 .articles {
     background: lighten(palette(gray), 30%);
+    padding: $spacer;
 
     &__wrapper {
         display: flex;
@@ -13,22 +12,22 @@
 }
 
 .article {
-    $spacer: $padding / 2;
     $blockTablet: 50%;
     $blockDesktop: 33.3333333%;
     color: palette(gray);
     line-height: 1.15;
+    padding: $spacer;
     position: realtive;
     width: 100%;
     word-spacing: -1rem;
 
-    @media ('min-width: 480px') {
+    @include media('>=small') {
         width: $blockTablet;
         height: 0;
-        padding-top: $blockTablet;
+        padding: $blockTablet 0 0;
     }
 
-    @media ('min-width: 768px') {
+    @include media('>=medium') {
         width: $blockDesktop;
         padding-top: $blockDesktop;
     }
@@ -37,14 +36,18 @@
         background: white;
         border: 1px solid palette(gray);
         border-radius: $radius;
-        bottom: $spacer;
         font-family: 'BLOKKNeue';
-        left: $spacer;
-        overflow: hidden;
         padding: $padding;
-        position: absolute;
-        right: $spacer;
-        top: $spacer;
+        position: relative;
+
+        @include media('>=small') {
+            bottom: $spacer;
+            left: $spacer;
+            overflow: hidden;
+            position: absolute;
+            right: $spacer;
+            top: $spacer;
+        }
     }
 
     &--month {
@@ -53,11 +56,11 @@
 
     &--small {
 
-        @media ('min-width: 480px') {
+        @include media('>=small') {
             width: $blockTablet;
         }
 
-        @media ('min-width: 768px') {
+        @include media('>=medium') {
             width: $blockDesktop;
         }
     }
@@ -65,11 +68,11 @@
     &--long {
         width: 100%;
 
-        @media ('min-width: 480px') {
+        @include media('>=small') {
             width: $blockTablet * 2;
         }
 
-        @media ('min-width: 768px') {
+        @include media('>=medium') {
             width: $blockDesktop * 2;
         }
     }
@@ -77,11 +80,11 @@
 
     &--tall {
 
-        @media ('min-width: 480px') {
+        @include media('>=small') {
             padding-top: $blockTablet * 2;
         }
 
-        @media ('min-width: 768px') {
+        @include media('>=medium') {
             padding-top: $blockDesktop * 2;
         }
     }
@@ -90,19 +93,46 @@
         width: 100px;
     }
 
+    &__date {
+        color: lighten(palette(gray), 20%);
+    }
+
     &__heading {
-        color: palette(gray);
+
+    }
+
+    &__description {
+        color: lighten(palette(gray), 20%);
     }
 
     &__more {
         $offset: $padding * -1;
-        background: red;
+        background: lighten(palette(gray), 20%);
         border: 0;
+        border-top: 1px solid palette(gray);
         border-radius: 0;
         bottom: 0;
+        cursor: pointer;
         display: block;
         left: 0;
+        padding: $padding / 1.5 $padding;
         position: absolute;
+        text: {
+            align: left;
+            transform: uppercase;
+        }
         width: 100%;
+
+        &:before {
+            background-image: linear-gradient(to top, white, rgba(white, 0));
+            bottom: calc(100% + 1px);
+            content: "";
+            display: block;
+            height: 6.25rem;
+            left: 1px;
+            pointer-events: none;
+            position: absolute;
+            right: 1px;
+        }
     }
 }

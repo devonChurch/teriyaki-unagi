@@ -50,15 +50,10 @@ const Article = class {
         console.dir(Masonry);
 
         this.$wrapper.masonry({
-          // options
           itemSelector: '.article',
           columnWidth: '.article--small',
           percentPosition: true
-          // columnWidth: function () { console.log('Column width'); }
-
         });
-
-        // console.log(this.$wrapper.masonry.data);
 
     }
 
