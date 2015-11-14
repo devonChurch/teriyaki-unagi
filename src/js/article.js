@@ -9,12 +9,12 @@ const Article = class {
     constructor(lightbox) {
 
         console.log('Constructing Article...');
-        console.log(lightbox);
 
         this.lightbox = lightbox;
         this.$wrapper = $('.articles__wrapper');
         // this.$articles = this.$wrapper.find$('.articles');
         this.createGrid();
+        this.listeners();
 
     }
 
@@ -23,8 +23,8 @@ const Article = class {
         this.$wrapper.on('click', '.article__more', (e) => {
 
             const $article = $(e.currentTarget).closest('.article');
-            const json = this.getJson();
-            this.lightbox.activate();
+            // const json = this.getJson();
+            this.lightbox.activate($article);
 
         });
 
@@ -39,15 +39,9 @@ const Article = class {
     createGrid() {
 
         console.log('Create grid');
-        // console.log(Masonry);
 
         // convert constructor to jQuery plugin
         $.bridget( 'masonry', Masonry );
-
-        const column = 960 / 3;
-
-        console.log(Masonry);
-        console.dir(Masonry);
 
         this.$wrapper.masonry({
           itemSelector: '.article',

@@ -1,21 +1,48 @@
 .lightbox {
-    background: white;
-    left: 50%;
-    position: absolute;
+    background: rgba(white, 0.7);
+    color: palette(gray);
+    height: 100vh;
+    position: fixed;
+    left: 0;
     top: 0;
-    transform: translateX(-50%);
-    width: 50rem;
-
-    &__overlay {
-        background: rgba(white, 0.7);
-        height: 100vh;
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
+    width: 100%;
+    z-index: 2;
 
     &__center {
+        background: white;
+        border: 1px solid palette(gray);
+        border-radius: $radius;
+        box-shadow: 0px 5px 15px 0px rgba(black, 0.25);
+        font-family: 'BLOKKNeue';
+        margin: auto;
+        max-height: 90vh;
+        max-width: 50rem;
+        padding: $padding $padding 2.5rem;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 
+    &__content {
+
+    }
+
+    &__more {
+        $offset: $padding * -1;
+        background: lighten(palette(gray), 20%);
+        border: 0;
+        border-top: 1px solid palette(gray);
+        border-radius: 0;
+        bottom: 0;
+        cursor: pointer;
+        display: block;
+        left: 0;
+        padding: $padding / 1.5 $padding;
+        position: absolute;
+        text: {
+            align: left;
+            transform: uppercase;
+        }
+        width: 100%;
     }
 }
