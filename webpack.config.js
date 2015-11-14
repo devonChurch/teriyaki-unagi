@@ -19,7 +19,8 @@ module.exports = {
     module: {
         loaders: [
             { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css?sourceMap!autoprefixer?browsers=last 2 versions!sass?sourceMap') },
-            { test: /\.js$/, exclude: /node_modules/, loader: 'babel!eslint'} // Automatically generates source maps without the sourceMaps config
+            { test: /\.js$/, exclude: /node_modules/, loader: 'babel!eslint'}, // Automatically generates source maps without the sourceMaps config
+            { test: /masonry-layout/, loader: 'imports?define=>false&this=>window' }
         ]
     },
     eslint: {

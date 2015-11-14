@@ -3,6 +3,24 @@
     src:  url('/font/BLOKKNeue-Regular.woff') format('woff');
 }
 
+$palette: (
+    pink: #E91E63,
+    purple: #673AB7,
+    blue: #3F51B5,
+    green: #009688,
+    yellow: #FFEB3B,
+    orange: #FF5722,
+    brown: #795548,
+    gray: #9E9E9E
+);
+
+@function palette($color) {
+    @return map-get($palette, $color);
+}
+
+$padding: 1.25rem;
+$radius: 0.3rem;
+
 html {
   box-sizing: border-box;
 }

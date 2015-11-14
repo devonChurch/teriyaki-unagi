@@ -1,9 +1,9 @@
 
 
 .articles {
-    background: red;
+    background: lighten(palette(gray), 30%);
 
-    &__month {
+    &__wrapper {
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
@@ -13,33 +13,96 @@
 }
 
 .article {
-    $padding: 1.25rem;
     $spacer: $padding / 2;
-    $block: 33.3333333%;
-
-    border: 1px solid black;
-    font-family: 'BLOKKNeue';
+    $blockTablet: 50%;
+    $blockDesktop: 33.3333333%;
+    color: palette(gray);
     line-height: 1.15;
-    padding: $padding;
-    width: $block;
+    position: realtive;
+    width: 100%;
     word-spacing: -1rem;
 
-    &--long {
-        width: $block * 2;
+    @media ('min-width: 480px') {
+        width: $blockTablet;
+        height: 0;
+        padding-top: $blockTablet;
     }
 
+    @media ('min-width: 768px') {
+        width: $blockDesktop;
+        padding-top: $blockDesktop;
+    }
+
+    &__padding {
+        background: white;
+        border: 1px solid palette(gray);
+        border-radius: $radius;
+        bottom: $spacer;
+        font-family: 'BLOKKNeue';
+        left: $spacer;
+        overflow: hidden;
+        padding: $padding;
+        position: absolute;
+        right: $spacer;
+        top: $spacer;
+    }
+
+    &--month {
+        width: 100%;
+    }
+
+    &--small {
+
+        @media ('min-width: 480px') {
+            width: $blockTablet;
+        }
+
+        @media ('min-width: 768px') {
+            width: $blockDesktop;
+        }
+    }
+
+    &--long {
+        width: 100%;
+
+        @media ('min-width: 480px') {
+            width: $blockTablet * 2;
+        }
+
+        @media ('min-width: 768px') {
+            width: $blockDesktop * 2;
+        }
+    }
+
+
     &--tall {
-        height: 800px;
+
+        @media ('min-width: 480px') {
+            padding-top: $blockTablet * 2;
+        }
+
+        @media ('min-width: 768px') {
+            padding-top: $blockDesktop * 2;
+        }
     }
 
     &__thumbnail {
         width: 100px;
     }
 
+    &__heading {
+        color: palette(gray);
+    }
+
     &__more {
         $offset: $padding * -1;
+        background: red;
+        border: 0;
+        border-radius: 0;
+        bottom: 0;
         display: block;
-        margin: 0 $offset $offset $offset;
-        width: calc(100% + (#{$padding} * 2));
+        left: 0;
+        position: absolute;
+        width: 100%;
     }
 }

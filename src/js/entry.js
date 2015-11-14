@@ -1,6 +1,10 @@
 require('../sass/style.scss');
-const $ = require('jquery');
+const Lightbox = require('./lightbox');
+const Article = require('./article');
 
-console.log('Test version 0.06');
+const lightbox = new Lightbox();
+const article = new Article(lightbox);
 
-$('h6').text('Working....');
+
+
+console.log('Entry 0.01');
