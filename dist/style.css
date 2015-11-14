@@ -1,0 +1,61 @@
+@font-face {
+  font-family: 'BLOKKNeue';
+  src: url("/font/BLOKKNeue-Regular.woff") format("woff"); }
+
+html {
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+.articles {
+  background: red; }
+  .articles__wrapper {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+    margin: auto;
+    max-width: 60rem; }
+
+.article {
+  border: 1px solid black;
+  border-radius: 0.3rem;
+  font-family: 'BLOKKNeue';
+  line-height: 1.15;
+  padding: 1.25rem;
+  width: 33.33333%;
+  word-spacing: -1rem; }
+  .article--long {
+    width: 66.66667%; }
+  .article--tall {
+    height: 800px; }
+  .article__thumbnail {
+    width: 100px; }
+  .article__more {
+    display: block;
+    margin: 0 -1.25rem -1.25rem -1.25rem;
+    width: calc(100% + (1.25rem * 2)); }
+
+.lightbox {
+  background: white;
+  left: 50%;
+  position: absolute;
+  top: 0;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: 50rem; }
+  .lightbox__overlay {
+    background: rgba(255, 255, 255, 0.7);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%; }
+
+/*# sourceMappingURL=style.css.map*/
