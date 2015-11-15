@@ -24,7 +24,7 @@ const Article = class {
 
             const $article = $(e.currentTarget).closest('.article');
             // const json = this.getJson();
-            this.lightbox.activate($article);
+            this.lightbox.initialise($article);
 
         });
 

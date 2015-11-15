@@ -23,6 +23,8 @@ $palette: (
 $padding: 1.25rem;
 $spacer: $padding / 2;
 $radius: 0.3rem;
+$speed: 0.5s;
+$ease: linear;
 
 html {
   box-sizing: border-box;
