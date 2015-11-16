@@ -187,7 +187,12 @@
             align: left;
             transform: uppercase;
         }
+        transition: background $speed $ease;
         width: 100%;
+
+        &:hover {
+            background: lighten(palette(gray), 10%);
+        }
 
         &:before {
             background-image: linear-gradient(to top, white, rgba(white, 0));

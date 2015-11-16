@@ -4,12 +4,14 @@
     height: 100vh;
     position: fixed;
     left: 0;
+    line-height: 1.15;
     margin: 100%;
-    opacity: 0;
+    opacity: 0.5;
     top: 0;
-    transition: opacity $speed $ease,
-                margin 0s linear $speed;
+    transition: opacity $speed-open $ease,
+                margin 0s linear $speed-open;
     width: 100%;
+    word-spacing: -1rem;
     z-index: 2;
 
     &.lightbox--active {
@@ -25,9 +27,8 @@
         box-shadow: 0px 5px 15px 0px rgba(black, 0.25);
         font-family: 'BLOKKNeue';
         margin: auto;
-        max-height: 90vh;
+        height: 90vh;
         max-width: 50rem;
-        padding: $padding $padding 2.5rem;
         position: relative;
         top: 50%;
         transform: translateY(-50%);
@@ -35,12 +36,11 @@
 
     &__offset {
         height: 100%;
-        left: 0;
+        left: $padding;
         position: absolute;
+        right: $padding;
         top: 0;
         transform-origin: center center;
-        transition: transform;// $speed $ease;
-        width: 100%;
     }
 
     &__scale {
@@ -50,16 +50,52 @@
         top: 0;
         transform: scale(0);
         transform-origin: center center;
-        transition: transform $speed $ease;
+        // transition: transform $speed-open $ease;
         width: 100%;
 
-        .lightbox--active & {
-            transform: scale(1);
-        }
+        // .lightbox--active & {
+        //     transform: scale(1);
+        // }
     }
 
     &__content {
+        height: calc(90vh - 2.6rem);
+        overflow: auto;
+        padding: $padding;
+        position: relative;
+    }
 
+    &__date {
+        color: lighten(palette(gray), 30%);
+    }
+
+    &__heading {
+        font-size: 1.5rem;
+        margin: 0.75rem 0 0;
+
+        @include media('>=small') {
+            font-size: 2.5rem;
+            word-spacing: -2.5rem;
+        }
+    }
+
+    &__sub-heading {
+        margin: 0;
+    }
+
+    &__description {
+        color: lighten(palette(gray), 20%);
+        margin: 1.5rem auto;
+
+        &--link {
+            color: lighten(palette(blue), 30%);
+            text-decoration: none;
+            transition: color $speed $ease;
+
+            &:hover {
+                color: palette(gray);
+            }
+        }
     }
 
     &__more {
@@ -78,6 +114,11 @@
             align: left;
             transform: uppercase;
         }
+        transition: background $speed $ease;
         width: 100%;
+
+        &:hover {
+            background: lighten(palette(gray), 10%);
+        }
     }
 }

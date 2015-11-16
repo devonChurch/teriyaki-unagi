@@ -1,49 +1,70 @@
 const $ = require('jquery');
-
-console.log('Lightbox 0.01');
-
-$('h6').text('Working....');
+require('gsap'); /* global TweenMax, Power4 */
 
 const Lightbox = class {
 
     constructor() {
 
-        console.log('Constructing Lightbox...');
-
         this.$window = $(window);
+        this.$body = $('body');
         this.$lightbox = $('#lightbox');
         this.$offset = this.$lightbox.find('.lightbox__offset');
-        this.listeners();
+        this.$scale = this.$lightbox.find('.lightbox__scale');
+        this.$content = this.$lightbox.find('.lightbox__content');
 
     }
 
-    listeners() {
+    listenersOn() {
 
-        this.$lightbox.on('click', '.lightbox__more', () => {
-            this.changeState(false);
-        });
+        setTimeout(() => {
+
+            this.$body.on('click.lightbox', (e) => {
+
+                if (!$(e.target).closest('.lightbox__center').length) {
+
+                    this.listenersOff();
+                    this.changeState(false);
+
+                }
+
+            }).on('click.lightBox', '.lightbox__more', () => {
+
+                this.listenersOff();
+                this.changeState(false);
+
+            });
+
+        }, 0);
 
     }
 
-    initialise($article) {
+    listenersOff() {
 
-        console.log('Activating lightbox');
+        this.$body.off('click.lightbox');
+    }
+
+    get content() {
+
+        return this.$content;
+
+    }
+
+    expand($article) {
 
         this.$article = $article;
         this.changeState(true);
+        this.listenersOn();
 
     }
 
     changeState(expand) {
 
+        const $speed = 0.5;
         const {x, y} = this.findOffset();
 
         if (expand) {
 
-            this.$offset.css({
-                'transform': `translate(${x}px, ${y}px)`,
-                'transition': '0s'
-            });
+            TweenMax.set(this.$offset, {x: x, y: y});
 
         }
 
@@ -51,10 +72,8 @@ const Lightbox = class {
 
         setTimeout(() => {
 
-            this.$offset.css({
-                'transform': `translate(${expand ? 0 : x}px, ${expand ? 0 : y}px)`,
-                'transition': `0.5s`
-            });
+            TweenMax.to(this.$scale, $speed, {scale: expand ? 1 : 0});
+            TweenMax.to(this.$offset, $speed, {x: expand ? 0 : x, y: expand ? 0 : y, ease: Power4[`ease${expand ? 'In' : 'Out'}`]});
 
         }, 0);
 
@@ -80,8 +99,6 @@ const Lightbox = class {
         const x = offset.left + (width / 2);
         const y = offset.top - scroll + (height / 2);
 
-        console.log(`scroll: ${scroll} | offset: ${offset} | height: ${height} | width: ${width} | x: ${x} | y: ${y}`);
-
         return {x, y};
 
     }
@@ -99,4 +116,4 @@ const Lightbox = class {
 
 };
 
-module.exports = Lightbox;
+module.exports = new Lightbox();

@@ -42,6 +42,7 @@
     "webpack-dev-server": "^1.12.1"
   },
   "dependencies": {
+    "gsap": "^1.18.0",
     "jquery": "^2.1.4",
     "jquery-bridget": "^1.1.0",
     "masonry-layout": "^3.3.2"

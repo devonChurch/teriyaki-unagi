@@ -1,18 +1,13 @@
 const $ = require('jquery');
+const lightbox = require('./lightbox');
 const bridget = require('jquery-bridget');
 const Masonry = require('masonry-layout');
 
-console.log('Article 0.02');
-
 const Article = class {
 
-    constructor(lightbox) {
+    constructor() {
 
-        console.log('Constructing Article...');
-
-        this.lightbox = lightbox;
         this.$wrapper = $('.articles__wrapper');
-        // this.$articles = this.$wrapper.find$('.articles');
         this.createGrid();
         this.listeners();
 
@@ -23,22 +18,15 @@ const Article = class {
         this.$wrapper.on('click', '.article__more', (e) => {
 
             const $article = $(e.currentTarget).closest('.article');
-            // const json = this.getJson();
-            this.lightbox.initialise($article);
+
+            lightbox.expand($article);
+            this.addContent();
 
         });
 
     }
 
-    getJson() {
-
-        console.log('Getting article JSON');
-
-    }
-
     createGrid() {
-
-        console.log('Create grid');
 
         // convert constructor to jQuery plugin
         $.bridget( 'masonry', Masonry );
@@ -51,6 +39,12 @@ const Article = class {
 
     }
 
+    addContent() {
+
+        // lightbox.content.html('<h2>Put your HTML content in here</h2>');
+
+    }
+
 };
 
-module.exports = Article;
+module.exports = new Article();

@@ -8,7 +8,7 @@
 $palette: (
     pink: #E91E63,
     purple: #673AB7,
-    blue: #3F51B5,
+    blue: #03A9F4,
     green: #009688,
     yellow: #FFEB3B,
     orange: #FF5722,
@@ -23,7 +23,8 @@ $palette: (
 $padding: 1.25rem;
 $spacer: $padding / 2;
 $radius: 0.3rem;
-$speed: 0.5s;
+$speed: 0.25s;
+$speed-open: 0.5s;
 $ease: linear;
 
 html {
