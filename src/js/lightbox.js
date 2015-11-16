@@ -11,6 +11,7 @@ const Lightbox = class {
         this.$offset = this.$lightbox.find('.lightbox__offset');
         this.$scale = this.$lightbox.find('.lightbox__scale');
         this.$content = this.$lightbox.find('.lightbox__content');
+        this.transition = this.testTransition();
 
     }
 
@@ -49,6 +50,14 @@ const Lightbox = class {
 
     }
 
+    testTransition() {
+
+        this.$lightbox.addClass(`lightbox--${window.TweenMax ? 'greensock' : 'native'}`);
+        this.$lightbox.removeClass(`lightbox--${!window.TweenMax ? 'greensock' : 'native'}`);
+        return window.TweenMax ? 'javscript' : 'native';
+
+    }
+
     expand($article) {
 
         this.$article = $article;
@@ -59,23 +68,62 @@ const Lightbox = class {
 
     changeState(expand) {
 
-        const $speed = 0.5;
+        const speed = 0.5;
         const {x, y} = this.findOffset();
+
+        this[`${this.transition}Transition`](expand, speed, x, y);
+
+    }
+
+    javscriptTransition(expand, speed, x, y) {
 
         if (expand) {
 
-            TweenMax.set(this.$offset, {x: x, y: y});
+            TweenMax.set(this.$lightbox, {visibility: 'visible'});
 
         }
 
-        this.$lightbox[`${expand ? 'add' : 'remove'}Class`]('lightbox--active');
-
         setTimeout(() => {
 
-            TweenMax.to(this.$scale, $speed, {scale: expand ? 1 : 0});
-            TweenMax.to(this.$offset, $speed, {x: expand ? 0 : x, y: expand ? 0 : y, ease: Power4[`ease${expand ? 'In' : 'Out'}`]});
+            TweenMax.fromTo(this.$lightbox, speed, {opacity: expand ? 0 : 1}, {opacity: expand ? 1 : 0, onComplete: () => {
+
+                if (!expand) {
+
+                    TweenMax.set(this.$lightbox, {visibility: 'hidden'});
+
+                }
+
+            }});
+
+            TweenMax.fromTo(this.$scale, speed, {scale: expand ? 0 : 1}, {scale: expand ? 1 : 0});
+            TweenMax.fromTo(this.$offset, speed, {x: expand ? x : 0, y: expand ? y: 0}, {x: expand ? 0 : x, y: expand ? 0 : y, ease: Power4[`ease${expand ? 'In' : 'Out'}`]});
 
         }, 0);
+
+
+    }
+
+    nativeTransition(expand, speed, x, y) {
+
+        if (expand) {
+
+             this.$offset.css({
+                 'transform': `translate(${x}px, ${y}px)`,
+                 'transition-duration': '0s'
+             });
+
+         }
+
+         this.$lightbox[`${expand ? 'add' : 'remove'}Class`]('lightbox--native-active');
+
+         setTimeout(() => {
+
+             this.$offset.css({
+                 'transform': `translate(${expand ? 0 : x}px, ${expand ? 0 : y}px)`,
+                 'transition-duration': '0.5s'
+             });
+
+         }, 0);
 
     }
 
