@@ -18,10 +18,14 @@ const Lightbox = class {
 
     listenersOn() {
 
+        // Wait for the next CPU cycle so that the listeners are not immediately
+        // initiated resulting in the light box instantly closing again.
+
         setTimeout(() => {
 
             this.$body.on('click.lightbox', (e) => {
 
+                // Refers to clicking anywhere except on the light box content.
                 if (!$(e.target).closest('.lightbox__center').length) {
 
                     this.listenersOff();
@@ -32,7 +36,7 @@ const Lightbox = class {
             }).on('click.lightBox', '.lightbox__more', () => {
 
                 this.listenersOff();
-                this.changeState(false);
+                this.changeState({expand: false});
 
             });
 
@@ -42,16 +46,29 @@ const Lightbox = class {
 
     listenersOff() {
 
+        // Turn off all light box listeners when the unit is in its dormant
+        // state i.e. on load / after being closed.
+
         this.$body.off('click.lightbox');
+
     }
 
     get content() {
+
+        // Returns the DOM element in which to inject content into. Have left
+        // the decision regarding the injection process up to the developer to
+        // give freedom + keeping the base code lightweight.
 
         return this.$content;
 
     }
 
     testTransition() {
+
+        // This is a test to see if the Greenock animation platform is present
+        // (specifically TweenMax) - if not available then we use native CSS3
+        // transitions. Depending on result we add / remove the appropriate
+        // class names to set the DOM up for the transition phase.
 
         this.$lightbox.addClass(`lightbox--${window.TweenMax ? 'greensock' : 'native'}`);
         this.$lightbox.removeClass(`lightbox--${!window.TweenMax ? 'greensock' : 'native'}`);
@@ -61,17 +78,24 @@ const Lightbox = class {
 
     expand($article) {
 
-        this.$article = $article || false;
-        this.changeState(true);
+        // The entry point to expand the light box. We pass in a reference
+        // (optional) for where the light box should expand from, run the
+        // animation and activate the listeners.
+
+        this.$article = $article;
+        this.changeState({expand: true});
         this.listenersOn();
 
     }
 
-    changeState(expand) {
+    changeState({expand}) {
 
         const speed = 0.5;
         const {x, y} = this.findOffset();
 
+        // Run either the TweenMax or native transition. The applicable function
+        // runs both the expand and contract animation and is determined via the
+        // expand parameter (true = expand, false = contract).
         this[`${this.transition}Transition`](expand, speed, x, y);
 
     }
@@ -84,6 +108,8 @@ const Lightbox = class {
 
         }
 
+        // Wait for the next CPU cycle so that any of the setup CSS above can be
+        // injected into the DOM before being overridden when the animation begins.
         setTimeout(() => {
 
             TweenMax.fromTo(this.$lightbox, speed, {opacity: expand ? 0 : 1}, {opacity: expand ? 1 : 0, onComplete: () => {
@@ -117,6 +143,8 @@ const Lightbox = class {
 
          this.$lightbox[`${expand ? 'add' : 'remove'}Class`]('lightbox--native-active');
 
+         // Wait for the next CPU cycle so that any of the setup CSS above can be
+         // injected into the DOM before being overridden when the animation begins.
          setTimeout(() => {
 
              this.$offset.css({
@@ -130,7 +158,12 @@ const Lightbox = class {
 
     findOffset() {
 
-        const {x: articleX, y: articleY} = this.article ? this.articleCenter() : this.windowCenter();
+        // Find how much to offset the light box before animating into view so
+        // that it expands from the supplied article reference. If no article
+        // reference is supplied then the light box will expand from the windows
+        // centre.
+
+        const {x: articleX, y: articleY} = this.$article ? this.articleCenter() : this.windowCenter();
         const {x: windowX, y: windowY} = this.windowCenter();
         const x = articleX - windowX;
         const y = articleY - windowY;

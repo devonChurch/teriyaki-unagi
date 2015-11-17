@@ -1,7 +1,5 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,100);
-
 @font-face {
-    font-family: 'BLOKKNeue';
+    font-family: 'BLOKKNeue-Regular';
     src:  url('/font/BLOKKNeue-Regular.woff') format('woff');
 }
 
@@ -20,11 +18,18 @@ $palette: (
     @return map-get($palette, $color);
 }
 
+$speeds: (
+    base: 0.25s,
+    open: 0.5s
+);
+
+@function speed($speed: base) {
+    @return map-get($speeds, $speed);
+}
+
 $padding: 1.25rem;
 $spacer: $padding / 2;
 $radius: 0.3rem;
-$speed: 0.25s;
-$speed-open: 0.5s;
 $ease: linear;
 
 html {

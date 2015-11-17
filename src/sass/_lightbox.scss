@@ -8,13 +8,12 @@
     opacity: 0;
     top: 0;
     width: 100%;
-    word-spacing: -1rem;
     z-index: 2;
 
     &.lightbox--native {
         margin: 100%;
-        transition: opacity $speed-open $ease,
-                    margin 0s linear $speed-open;
+        transition: opacity speed(open) $ease,
+                    margin 0s linear speed(open);
     }
 
     &.lightbox--native-active {
@@ -32,7 +31,7 @@
         border: 1px solid palette(gray);
         border-radius: $radius;
         box-shadow: 0px 5px 15px 0px rgba(black, 0.25);
-        font-family: 'BLOKKNeue';
+        font-family: 'BLOKKNeue-Regular';
         height: 90vh;
         margin: auto;
         max-width: 50rem;
@@ -61,7 +60,7 @@
 
         .lightbox--native & {
             transform: scale(0);
-            transition: transform $speed-open $ease;
+            transition: transform speed(open) $ease;
         }
 
         .lightbox--native-active & {
@@ -92,16 +91,18 @@
 
     &__sub-heading {
         margin: 0;
+        word-spacing: -1rem;
     }
 
     &__description {
         color: lighten(palette(gray), 20%);
         margin: 1.5rem auto;
+        word-spacing: -1rem;
 
         &--link {
             color: lighten(palette(blue), 30%);
             text-decoration: none;
-            transition: color $speed $ease;
+            transition: color speed() $ease;
 
             &:hover {
                 color: palette(gray);
@@ -126,8 +127,24 @@
             align: left;
             transform: uppercase;
         }
-        transition: background $speed $ease;
+        transition: background speed() $ease;
         width: 100%;
+
+        &:after {
+            background: {
+                image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aCBkPSJNMTUgMTAuOGgtMTBjLS40IDAtLjgtLjMtLjgtLjhzLjQtLjguOC0uOGgxMGMuNCAwIC44LjMuOC44cy0uNC44LS44Ljh6Ii8+PC9zdmc+');
+                position: center center;
+                repeat: no-repeat;
+            }
+            content: "";
+            display: block;
+            height: 1.25rem;
+            margin-top: -$padding / 2;
+            position: absolute;
+            right: $padding;
+            top: 50%;
+            width: 1.25rem;
+        }
 
         &:hover {
             background: lighten(palette(gray), 10%);
