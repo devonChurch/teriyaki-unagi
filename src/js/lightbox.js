@@ -12,6 +12,7 @@ const Lightbox = class {
         this.$scale = this.$lightbox.find('.lightbox__scale');
         this.$content = this.$lightbox.find('.lightbox__content');
         this.transition = this.testTransition();
+        this.$article = null; // Retrieved via this.expand();
 
     }
 
@@ -60,7 +61,7 @@ const Lightbox = class {
 
     expand($article) {
 
-        this.$article = $article;
+        this.$article = $article || false;
         this.changeState(true);
         this.listenersOn();
 
@@ -129,7 +130,7 @@ const Lightbox = class {
 
     findOffset() {
 
-        const {x: articleX, y: articleY} = this.articleCenter();
+        const {x: articleX, y: articleY} = this.article ? this.articleCenter() : this.windowCenter();
         const {x: windowX, y: windowY} = this.windowCenter();
         const x = articleX - windowX;
         const y = articleY - windowY;

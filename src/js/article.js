@@ -20,6 +20,7 @@ const Article = class {
             const $article = $(e.currentTarget).closest('.article');
 
             lightbox.expand($article);
+            // lightbox.expand(); // Pass in no article reference and the light box will expand from the window center
             this.addContent();
 
         });
