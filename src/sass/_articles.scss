@@ -1,0 +1,229 @@
+// This is simply demo code to simulate a layout of articles that act as a
+// conduit to activate the light box code.
+
+.articles {
+    background: lighten(palette(gray), 30%);
+    padding: $spacer;
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        margin: auto;
+        max-width: 60rem;
+    }
+}
+
+.article {
+    $blockTablet: 50%;
+    $blockDesktop: 33.3333333%;
+    color: palette(gray);
+    line-height: 1.15;
+    padding: $spacer;
+    position: relative;
+    width: 100%;
+
+    @include media('>=small') {
+        width: $blockTablet;
+        height: 0;
+        padding: $blockTablet 0 0;
+    }
+
+    @include media('>=medium') {
+        width: $blockDesktop;
+        padding-top: $blockDesktop;
+    }
+
+    &__padding {
+        background: white;
+        border: 1px solid palette(gray);
+        border-radius: $radius;
+        font-family: 'BLOKKNeue-Regular';
+        padding: $padding;
+        position: relative;
+
+        @include media('>=small') {
+            bottom: $spacer;
+            left: $spacer;
+            overflow: hidden;
+            position: absolute;
+            right: $spacer;
+            top: $spacer;
+        }
+    }
+
+    &--month {
+        text-align: center;
+        width: 100%;
+
+        .article__padding {
+            background: {
+                position: center center;
+                repeat: no-repeat;
+                size: cover;
+            }
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem $padding;
+
+            &:before {
+                background: rgba(black, 0.5);
+                content: "";
+                display: block;
+                height: 100%;
+                left: 0;
+                position: absolute;
+                top: 0;
+                width: 100%;
+            }
+
+            @include media('>=small') {
+                padding: $padding;
+            }
+
+            & > * {
+                z-index: 1;
+            }
+
+            @at-root {
+
+                .article--november#{&} {
+                    // background-image: url('https://static.pexels.com/photos/7862/pexels-photo.jpg');
+                }
+
+                .article--october#{&} {
+                    // background-image: url('https://static.pexels.com/photos/597/landscape-nature-sunset-clouds.jpg');
+                }
+
+                .article--september#{&} {
+                    // background-image: url('https://static.pexels.com/photos/4959/wood-nature-forest-trees.jpg');
+                }
+            }
+
+            .article__date {
+                color: white;
+                font-size: 2.5rem;
+                margin: 0 0 -1rem;
+
+                @include media('>=small') {
+                    font-size: 4rem;
+                }
+            }
+
+            .article__description {
+                color: white;
+                max-width: 40rem;
+            }
+        }
+    }
+
+    &--small {
+
+        @include media('>=small') {
+            width: $blockTablet;
+        }
+
+        @include media('>=medium') {
+            width: $blockDesktop;
+        }
+    }
+
+    &--long {
+        width: 100%;
+
+        @include media('>=small') {
+            width: $blockTablet * 2;
+        }
+
+        @include media('>=medium') {
+            width: $blockDesktop * 2;
+        }
+    }
+
+
+    &--tall {
+
+        @include media('>=small') {
+            padding-top: $blockTablet * 2;
+        }
+
+        @include media('>=medium') {
+            padding-top: $blockDesktop * 2;
+        }
+    }
+
+    &__thumbnail {
+        width: 100px;
+    }
+
+    &__date {
+        color: lighten(palette(gray), 30%);
+        font-size: 0.65rem;
+    }
+
+    &__heading {
+        font-size: 1.35rem;
+        margin: 0.25rem 0 0.5rem;
+        word-spacing: -1rem;
+    }
+
+    &__description {
+        color: lighten(palette(gray), 20%);
+        margin: 0.5rem auto;
+        word-spacing: -1rem;
+    }
+
+    &__more {
+        $offset: $padding * -1;
+        background: lighten(palette(gray), 20%);
+        border: 0;
+        border-top: 1px solid palette(gray);
+        border-radius: 0;
+        bottom: 0;
+        cursor: pointer;
+        display: block;
+        left: 0;
+        outline: 0;
+        padding: $padding / 1.5 $padding;
+        position: absolute;
+        text: {
+            align: left;
+            transform: uppercase;
+        }
+        transition: background speed() $ease;
+        width: 100%;
+
+        &:hover {
+            background: lighten(palette(gray), 10%);
+        }
+
+        &:before {
+            background-image: linear-gradient(to top, white, rgba(white, 0));
+            bottom: calc(100% + 1px);
+            content: "";
+            display: block;
+            height: 6.25rem;
+            left: 1px;
+            pointer-events: none;
+            position: absolute;
+            right: 1px;
+        }
+
+        &:after {
+            background: {
+                image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aCBkPSJNMTAgMTUuOGMtLjQgMC0uOC0uMy0uOC0uOHYtMTBjMC0uNC4zLS44LjgtLjhzLjguMy44Ljh2MTBjMCAuNC0uNC44LS44Ljh6TTE1IDEwLjhoLTEwYy0uNCAwLS44LS4zLS44LS44cy40LS44LjgtLjhoMTBjLjQgMCAuOC4zLjguOHMtLjQuOC0uOC44eiIvPjwvc3ZnPg==');
+                position: center center;
+                repeat: no-repeat;
+            }
+            content: "";
+            display: block;
+            height: 1.25rem;
+            margin-top: -$padding / 2;
+            position: absolute;
+            right: $padding;
+            top: 50%;
+            width: 1.25rem;
+        }
+    }
+}
