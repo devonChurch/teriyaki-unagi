@@ -1,7 +1,8 @@
 const $ = require('jquery');
-require('gsap'); /* global TweenMax, Power4 */
+// Only pull in TweenMax and not the whole Greenock platform (which is HUGE!).
+require('../../node_modules/gsap/src/uncompressed/TweenMax'); /* global TweenMax, Power4 */
 
-const Lightbox = class {
+const TeriyakiUnagi = class {
 
     constructor() {
 
@@ -70,9 +71,11 @@ const Lightbox = class {
         // transitions. Depending on result we add / remove the appropriate
         // class names to set the DOM up for the transition phase.
 
-        this.$lightbox.addClass(`lightbox--${window.TweenMax ? 'greensock' : 'native'}`);
-        this.$lightbox.removeClass(`lightbox--${!window.TweenMax ? 'greensock' : 'native'}`);
-        return window.TweenMax ? 'javscript' : 'native';
+        const tweenMax = window.TweenMax;
+
+        this.$lightbox.addClass(`lightbox--${tweenMax ? 'greensock' : 'native'}`);
+        this.$lightbox.removeClass(`lightbox--${!tweenMax ? 'greensock' : 'native'}`);
+        return tweenMax ? 'javscript' : 'native';
 
     }
 
@@ -126,7 +129,6 @@ const Lightbox = class {
             TweenMax.fromTo(this.$offset, speed, {x: expand ? x : 0, y: expand ? y: 0}, {x: expand ? 0 : x, y: expand ? 0 : y, ease: Power4[`ease${expand ? 'In' : 'Out'}`]});
 
         }, 0);
-
 
     }
 
@@ -198,4 +200,4 @@ const Lightbox = class {
 
 };
 
-module.exports = new Lightbox();
+module.exports = new TeriyakiUnagi();

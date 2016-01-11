@@ -4,11 +4,11 @@
   "description": "A light box that expands from the location of its source module.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devonChurch/dynamic-hue-side-nav.git"
+    "url": "git+https://github.com/devonChurch/teriyaki-unagi.git"
   },
   "keywords": [
     "Light box",

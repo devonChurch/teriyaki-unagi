@@ -47,11 +47,7 @@
 	'use strict';
 	
 	__webpack_require__(1);
-	var Lightbox = __webpack_require__(5);
-	var Article = __webpack_require__(9);
-	
-	var lightbox = new Lightbox();
-	var article = new Article(lightbox);
+	__webpack_require__(5);
 
 /***/ },
 /* 1 */
@@ -73,127 +69,73 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	var $ = __webpack_require__(6);
-	__webpack_require__(7); /* global TweenMax, Power4 */
+	__webpack_require__(7);
+	var Lightbox = __webpack_require__(8);
+	var Masonry = __webpack_require__(11);
 	
-	var Lightbox = (function () {
-	    function Lightbox() {
-	        _classCallCheck(this, Lightbox);
+	var Article = (function () {
 	
-	        this.$window = $(window);
-	        this.$body = $('body');
-	        this.$lightbox = $('#lightbox');
-	        this.$offset = this.$lightbox.find('.lightbox__offset');
-	        this.$scale = this.$lightbox.find('.lightbox__scale');
+	    // This is simply demo code to simulate a layout of articles that act as a
+	    // conduit to activate the light box code.
+	
+	    function Article() {
+	        _classCallCheck(this, Article);
+	
+	        this.$wrapper = $('.articles__wrapper');
+	        this.createGrid();
+	        this.listeners();
 	    }
 	
-	    _createClass(Lightbox, [{
-	        key: 'listenersOn',
-	        value: function listenersOn() {
+	    _createClass(Article, [{
+	        key: 'listeners',
+	        value: function listeners() {
 	            var _this = this;
 	
-	            setTimeout(function () {
+	            this.$wrapper.on('click', '.article__more', function (e) {
 	
-	                _this.$body.on('click.lightbox', function (e) {
+	                var $article = $(e.currentTarget).closest('.article');
 	
-	                    if (!$(e.target).closest('.lightbox__center').length) {
-	
-	                        _this.listenersOff();
-	                        _this.changeState(false);
-	                    }
-	                }).on('click.lightBox', '.lightbox__more', function () {
-	
-	                    _this.listenersOff();
-	                    _this.changeState(false);
-	                });
-	            }, 0);
+	                // Triggers the light box to expand into view. We can pass in a
+	                // reference to the article that the user clicked to simulate the
+	                // article expanding from that particular location. If no positioning
+	                // reference is passed through then the light box will expand from
+	                // the window center.
+	                Lightbox.expand($article);
+	                _this.addContent();
+	            });
 	        }
 	    }, {
-	        key: 'listenersOff',
-	        value: function listenersOff() {
+	        key: 'createGrid',
+	        value: function createGrid() {
 	
-	            this.$body.off('click.lightbox');
+	            // Converts the Masonry constructor to a jQuery plugin.
+	            $.bridget('masonry', Masonry);
+	
+	            // Run Masonry to create a tiled layout. target a article class name
+	            // rather than a fixed number of the column width parameter so that
+	            // design will work well in a responsive environment.
+	            this.$wrapper.masonry({
+	                itemSelector: '.article',
+	                columnWidth: '.article--small',
+	                percentPosition: true
+	            });
 	        }
 	    }, {
-	        key: 'initialise',
-	        value: function initialise($article) {
+	        key: 'addContent',
+	        value: function addContent() {
 	
-	            this.$article = $article;
-	            this.changeState(true);
-	            this.listenersOn();
-	        }
-	    }, {
-	        key: 'changeState',
-	        value: function changeState(expand) {
-	            var _this2 = this;
+	            // Add content to the light box in whatever way you see fit. Target the
+	            // light box content wrapper for easy HTML injection.
 	
-	            var $speed = 0.5;
+	            // Lightbox.content.html('<h2>Put your HTML content in here</h2>');
 	
-	            var _findOffset = this.findOffset();
-	
-	            var x = _findOffset.x;
-	            var y = _findOffset.y;
-	
-	            if (expand) {
-	
-	                TweenMax.set(this.$offset, { x: x, y: y });
-	            }
-	
-	            this.$lightbox[(expand ? 'add' : 'remove') + 'Class']('lightbox--active');
-	
-	            setTimeout(function () {
-	
-	                TweenMax.to(_this2.$scale, $speed, { scale: expand ? 1 : 0 });
-	                TweenMax.to(_this2.$offset, $speed, { x: expand ? 0 : x, y: expand ? 0 : y, ease: Power4['ease' + (expand ? 'In' : 'Out')] });
-	            }, 0);
-	        }
-	    }, {
-	        key: 'findOffset',
-	        value: function findOffset() {
-	            var _articleCenter = this.articleCenter();
-	
-	            var articleX = _articleCenter.x;
-	            var articleY = _articleCenter.y;
-	
-	            var _windowCenter = this.windowCenter();
-	
-	            var windowX = _windowCenter.x;
-	            var windowY = _windowCenter.y;
-	
-	            var x = articleX - windowX;
-	            var y = articleY - windowY;
-	
-	            return { x: x, y: y };
-	        }
-	    }, {
-	        key: 'articleCenter',
-	        value: function articleCenter() {
-	
-	            var scroll = this.$window.scrollTop();
-	            var offset = this.$article.offset();
-	            var height = this.$article.outerHeight();
-	            var width = this.$article.outerWidth();
-	            var x = offset.left + width / 2;
-	            var y = offset.top - scroll + height / 2;
-	
-	            return { x: x, y: y };
-	        }
-	    }, {
-	        key: 'windowCenter',
-	        value: function windowCenter() {
-	
-	            var height = this.$window.height();
-	            var width = this.$window.width();
-	            var x = width / 2;
-	            var y = height / 2;
-	
-	            return { x: x, y: y };
 	        }
 	    }]);
 	
-	    return Lightbox;
+	    return Article;
 	})();
 	
-	module.exports = Lightbox;
+	module.exports = new Article();
 
 /***/ },
 /* 6 */
@@ -9415,6 +9357,372 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+	 * Bridget makes jQuery widgets
+	 * v1.1.0
+	 * MIT license
+	 */
+	
+	( function( window ) {
+	
+	'use strict';
+	
+	// -------------------------- utils -------------------------- //
+	
+	var slice = Array.prototype.slice;
+	
+	function noop() {}
+	
+	// -------------------------- definition -------------------------- //
+	
+	function defineBridget( $ ) {
+	
+	// bail if no jQuery
+	if ( !$ ) {
+	  return;
+	}
+	
+	// -------------------------- addOptionMethod -------------------------- //
+	
+	/**
+	 * adds option method -> $().plugin('option', {...})
+	 * @param {Function} PluginClass - constructor class
+	 */
+	function addOptionMethod( PluginClass ) {
+	  // don't overwrite original option method
+	  if ( PluginClass.prototype.option ) {
+	    return;
+	  }
+	
+	  // option setter
+	  PluginClass.prototype.option = function( opts ) {
+	    // bail out if not an object
+	    if ( !$.isPlainObject( opts ) ){
+	      return;
+	    }
+	    this.options = $.extend( true, this.options, opts );
+	  };
+	}
+	
+	// -------------------------- plugin bridge -------------------------- //
+	
+	// helper function for logging errors
+	// $.error breaks jQuery chaining
+	var logError = typeof console === 'undefined' ? noop :
+	  function( message ) {
+	    console.error( message );
+	  };
+	
+	/**
+	 * jQuery plugin bridge, access methods like $elem.plugin('method')
+	 * @param {String} namespace - plugin name
+	 * @param {Function} PluginClass - constructor class
+	 */
+	function bridge( namespace, PluginClass ) {
+	  // add to jQuery fn namespace
+	  $.fn[ namespace ] = function( options ) {
+	    if ( typeof options === 'string' ) {
+	      // call plugin method when first argument is a string
+	      // get arguments for method
+	      var args = slice.call( arguments, 1 );
+	
+	      for ( var i=0, len = this.length; i < len; i++ ) {
+	        var elem = this[i];
+	        var instance = $.data( elem, namespace );
+	        if ( !instance ) {
+	          logError( "cannot call methods on " + namespace + " prior to initialization; " +
+	            "attempted to call '" + options + "'" );
+	          continue;
+	        }
+	        if ( !$.isFunction( instance[options] ) || options.charAt(0) === '_' ) {
+	          logError( "no such method '" + options + "' for " + namespace + " instance" );
+	          continue;
+	        }
+	
+	        // trigger method with arguments
+	        var returnValue = instance[ options ].apply( instance, args );
+	
+	        // break look and return first value if provided
+	        if ( returnValue !== undefined ) {
+	          return returnValue;
+	        }
+	      }
+	      // return this if no return value
+	      return this;
+	    } else {
+	      return this.each( function() {
+	        var instance = $.data( this, namespace );
+	        if ( instance ) {
+	          // apply options & init
+	          instance.option( options );
+	          instance._init();
+	        } else {
+	          // initialize new instance
+	          instance = new PluginClass( this, options );
+	          $.data( this, namespace, instance );
+	        }
+	      });
+	    }
+	  };
+	
+	}
+	
+	// -------------------------- bridget -------------------------- //
+	
+	/**
+	 * converts a Prototypical class into a proper jQuery plugin
+	 *   the class must have a ._init method
+	 * @param {String} namespace - plugin name, used in $().pluginName
+	 * @param {Function} PluginClass - constructor class
+	 */
+	$.bridget = function( namespace, PluginClass ) {
+	  addOptionMethod( PluginClass );
+	  bridge( namespace, PluginClass );
+	};
+	
+	return $.bridget;
+	
+	}
+	
+	// transport
+	if ( true ) {
+	  // AMD
+	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(6) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (defineBridget), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else if ( typeof exports === 'object' ) {
+	  defineBridget( require('jquery') );
+	} else {
+	  // get jquery from browser global
+	  defineBridget( window.jQuery );
+	}
+	
+	})( window );
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var $ = __webpack_require__(6);
+	__webpack_require__(9); /* global TweenMax, Power4 */
+	
+	var Lightbox = (function () {
+	    function Lightbox() {
+	        _classCallCheck(this, Lightbox);
+	
+	        this.$window = $(window);
+	        this.$body = $('body');
+	        this.$lightbox = $('#lightbox');
+	        this.$offset = this.$lightbox.find('.lightbox__offset');
+	        this.$scale = this.$lightbox.find('.lightbox__scale');
+	        this.$content = this.$lightbox.find('.lightbox__content');
+	        this.transition = this.testTransition();
+	        this.$article = null; // Retrieved via this.expand();
+	    }
+	
+	    _createClass(Lightbox, [{
+	        key: 'listenersOn',
+	        value: function listenersOn() {
+	            var _this = this;
+	
+	            // Wait for the next CPU cycle so that the listeners are not immediately
+	            // initiated resulting in the light box instantly closing again.
+	
+	            setTimeout(function () {
+	
+	                _this.$body.on('click.lightbox', function (e) {
+	
+	                    // Refers to clicking anywhere except on the light box content.
+	                    if (!$(e.target).closest('.lightbox__center').length) {
+	
+	                        _this.listenersOff();
+	                        _this.changeState(false);
+	                    }
+	                }).on('click.lightBox', '.lightbox__more', function () {
+	
+	                    _this.listenersOff();
+	                    _this.changeState({ expand: false });
+	                });
+	            }, 0);
+	        }
+	    }, {
+	        key: 'listenersOff',
+	        value: function listenersOff() {
+	
+	            // Turn off all light box listeners when the unit is in its dormant
+	            // state i.e. on load / after being closed.
+	
+	            this.$body.off('click.lightbox');
+	        }
+	    }, {
+	        key: 'testTransition',
+	        value: function testTransition() {
+	
+	            // This is a test to see if the Greenock animation platform is present
+	            // (specifically TweenMax) - if not available then we use native CSS3
+	            // transitions. Depending on result we add / remove the appropriate
+	            // class names to set the DOM up for the transition phase.
+	
+	            var tweenMax = window.TweenMax;
+	
+	            this.$lightbox.addClass('lightbox--' + (tweenMax ? 'greensock' : 'native'));
+	            this.$lightbox.removeClass('lightbox--' + (!tweenMax ? 'greensock' : 'native'));
+	            return tweenMax ? 'javscript' : 'native';
+	        }
+	    }, {
+	        key: 'expand',
+	        value: function expand($article) {
+	
+	            // The entry point to expand the light box. We pass in a reference
+	            // (optional) for where the light box should expand from, run the
+	            // animation and activate the listeners.
+	
+	            this.$article = $article;
+	            this.changeState({ expand: true });
+	            this.listenersOn();
+	        }
+	    }, {
+	        key: 'changeState',
+	        value: function changeState(_ref) {
+	            var expand = _ref.expand;
+	
+	            var speed = 0.5;
+	
+	            var _findOffset = this.findOffset();
+	
+	            var x = _findOffset.x;
+	            var y = _findOffset.y;
+	
+	            // Run either the TweenMax or native transition. The applicable function
+	            // runs both the expand and contract animation and is determined via the
+	            // expand parameter (true = expand, false = contract).
+	            this[this.transition + 'Transition'](expand, speed, x, y);
+	        }
+	    }, {
+	        key: 'javscriptTransition',
+	        value: function javscriptTransition(expand, speed, x, y) {
+	            var _this2 = this;
+	
+	            if (expand) {
+	
+	                TweenMax.set(this.$lightbox, { visibility: 'visible' });
+	            }
+	
+	            // Wait for the next CPU cycle so that any of the setup CSS above can be
+	            // injected into the DOM before being overridden when the animation begins.
+	            setTimeout(function () {
+	
+	                TweenMax.fromTo(_this2.$lightbox, speed, { opacity: expand ? 0 : 1 }, { opacity: expand ? 1 : 0, onComplete: function onComplete() {
+	
+	                        if (!expand) {
+	
+	                            TweenMax.set(_this2.$lightbox, { visibility: 'hidden' });
+	                        }
+	                    } });
+	
+	                TweenMax.fromTo(_this2.$scale, speed, { scale: expand ? 0 : 1 }, { scale: expand ? 1 : 0 });
+	                TweenMax.fromTo(_this2.$offset, speed, { x: expand ? x : 0, y: expand ? y : 0 }, { x: expand ? 0 : x, y: expand ? 0 : y, ease: Power4['ease' + (expand ? 'In' : 'Out')] });
+	            }, 0);
+	        }
+	    }, {
+	        key: 'nativeTransition',
+	        value: function nativeTransition(expand, speed, x, y) {
+	            var _this3 = this;
+	
+	            if (expand) {
+	
+	                this.$offset.css({
+	                    'transform': 'translate(' + x + 'px, ' + y + 'px)',
+	                    'transition-duration': '0s'
+	                });
+	            }
+	
+	            this.$lightbox[(expand ? 'add' : 'remove') + 'Class']('lightbox--native-active');
+	
+	            // Wait for the next CPU cycle so that any of the setup CSS above can be
+	            // injected into the DOM before being overridden when the animation begins.
+	            setTimeout(function () {
+	
+	                _this3.$offset.css({
+	                    'transform': 'translate(' + (expand ? 0 : x) + 'px, ' + (expand ? 0 : y) + 'px)',
+	                    'transition-duration': '0.5s'
+	                });
+	            }, 0);
+	        }
+	    }, {
+	        key: 'findOffset',
+	        value: function findOffset() {
+	
+	            // Find how much to offset the light box before animating into view so
+	            // that it expands from the supplied article reference. If no article
+	            // reference is supplied then the light box will expand from the windows
+	            // centre.
+	
+	            var _ref2 = this.$article ? this.articleCenter() : this.windowCenter();
+	
+	            var articleX = _ref2.x;
+	            var articleY = _ref2.y;
+	
+	            var _windowCenter = this.windowCenter();
+	
+	            var windowX = _windowCenter.x;
+	            var windowY = _windowCenter.y;
+	
+	            var x = articleX - windowX;
+	            var y = articleY - windowY;
+	
+	            return { x: x, y: y };
+	        }
+	    }, {
+	        key: 'articleCenter',
+	        value: function articleCenter() {
+	
+	            var scroll = this.$window.scrollTop();
+	            var offset = this.$article.offset();
+	            var height = this.$article.outerHeight();
+	            var width = this.$article.outerWidth();
+	            var x = offset.left + width / 2;
+	            var y = offset.top - scroll + height / 2;
+	
+	            return { x: x, y: y };
+	        }
+	    }, {
+	        key: 'windowCenter',
+	        value: function windowCenter() {
+	
+	            var height = this.$window.height();
+	            var width = this.$window.width();
+	            var x = width / 2;
+	            var y = height / 2;
+	
+	            return { x: x, y: y };
+	        }
+	    }, {
+	        key: 'content',
+	        get: function get() {
+	
+	            // Returns the DOM element in which to inject content into. Have left
+	            // the decision regarding the injection process up to the developer to
+	            // give freedom + keeping the base code lightweight.
+	
+	            return this.$content;
+	        }
+	    }]);
+	
+	    return Lightbox;
+	})();
+	
+	module.exports = new Lightbox();
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*!
 	 * VERSION: 1.18.0
 	 * DATE: 2015-09-05
@@ -15208,7 +15516,7 @@
 							if (global) {
 								_globals[n] = cl; //provides a way to avoid global namespace pollution. By default, the main classes like TweenLite, Power1, Strong, etc. are added to window unless a GreenSockGlobals is defined. So if you want to have things added to a custom object instead, just do something like window.GreenSockGlobals = {} before loading any GreenSock files. You can even set up an alias like window.GreenSockGlobals = windows.gs = {} so that you can access everything like gs.TweenLite. Also remember that ALL classes are added to the window.com.greensock object (in their respective packages, like com.greensock.easing.Power1, com.greensock.TweenLite, etc.)
 								hasModule = (typeof(module) !== "undefined" && module.exports);
-								if (!hasModule && "function" === "function" && __webpack_require__(8)){ //AMD
+								if (!hasModule && "function" === "function" && __webpack_require__(10)){ //AMD
 									!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() { return cl; }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 								} else if (ns === moduleName && hasModule){ //node
 									module.exports = cl;
@@ -16990,212 +17298,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 8 */
+/* 10 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var $ = __webpack_require__(6);
-	var bridget = __webpack_require__(10);
-	var Masonry = __webpack_require__(11);
-	
-	var Article = (function () {
-	    function Article(lightbox) {
-	        _classCallCheck(this, Article);
-	
-	        this.lightbox = lightbox;
-	        this.$wrapper = $('.articles__wrapper');
-	        this.createGrid();
-	        this.listeners();
-	    }
-	
-	    _createClass(Article, [{
-	        key: 'listeners',
-	        value: function listeners() {
-	            var _this = this;
-	
-	            this.$wrapper.on('click', '.article__more', function (e) {
-	
-	                var $article = $(e.currentTarget).closest('.article');
-	                _this.lightbox.initialise($article);
-	            });
-	        }
-	    }, {
-	        key: 'createGrid',
-	        value: function createGrid() {
-	
-	            // convert constructor to jQuery plugin
-	            $.bridget('masonry', Masonry);
-	
-	            this.$wrapper.masonry({
-	                itemSelector: '.article',
-	                columnWidth: '.article--small',
-	                percentPosition: true
-	            });
-	        }
-	    }]);
-	
-	    return Article;
-	})();
-	
-	module.exports = Article;
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
-	 * Bridget makes jQuery widgets
-	 * v1.1.0
-	 * MIT license
-	 */
-	
-	( function( window ) {
-	
-	'use strict';
-	
-	// -------------------------- utils -------------------------- //
-	
-	var slice = Array.prototype.slice;
-	
-	function noop() {}
-	
-	// -------------------------- definition -------------------------- //
-	
-	function defineBridget( $ ) {
-	
-	// bail if no jQuery
-	if ( !$ ) {
-	  return;
-	}
-	
-	// -------------------------- addOptionMethod -------------------------- //
-	
-	/**
-	 * adds option method -> $().plugin('option', {...})
-	 * @param {Function} PluginClass - constructor class
-	 */
-	function addOptionMethod( PluginClass ) {
-	  // don't overwrite original option method
-	  if ( PluginClass.prototype.option ) {
-	    return;
-	  }
-	
-	  // option setter
-	  PluginClass.prototype.option = function( opts ) {
-	    // bail out if not an object
-	    if ( !$.isPlainObject( opts ) ){
-	      return;
-	    }
-	    this.options = $.extend( true, this.options, opts );
-	  };
-	}
-	
-	// -------------------------- plugin bridge -------------------------- //
-	
-	// helper function for logging errors
-	// $.error breaks jQuery chaining
-	var logError = typeof console === 'undefined' ? noop :
-	  function( message ) {
-	    console.error( message );
-	  };
-	
-	/**
-	 * jQuery plugin bridge, access methods like $elem.plugin('method')
-	 * @param {String} namespace - plugin name
-	 * @param {Function} PluginClass - constructor class
-	 */
-	function bridge( namespace, PluginClass ) {
-	  // add to jQuery fn namespace
-	  $.fn[ namespace ] = function( options ) {
-	    if ( typeof options === 'string' ) {
-	      // call plugin method when first argument is a string
-	      // get arguments for method
-	      var args = slice.call( arguments, 1 );
-	
-	      for ( var i=0, len = this.length; i < len; i++ ) {
-	        var elem = this[i];
-	        var instance = $.data( elem, namespace );
-	        if ( !instance ) {
-	          logError( "cannot call methods on " + namespace + " prior to initialization; " +
-	            "attempted to call '" + options + "'" );
-	          continue;
-	        }
-	        if ( !$.isFunction( instance[options] ) || options.charAt(0) === '_' ) {
-	          logError( "no such method '" + options + "' for " + namespace + " instance" );
-	          continue;
-	        }
-	
-	        // trigger method with arguments
-	        var returnValue = instance[ options ].apply( instance, args );
-	
-	        // break look and return first value if provided
-	        if ( returnValue !== undefined ) {
-	          return returnValue;
-	        }
-	      }
-	      // return this if no return value
-	      return this;
-	    } else {
-	      return this.each( function() {
-	        var instance = $.data( this, namespace );
-	        if ( instance ) {
-	          // apply options & init
-	          instance.option( options );
-	          instance._init();
-	        } else {
-	          // initialize new instance
-	          instance = new PluginClass( this, options );
-	          $.data( this, namespace, instance );
-	        }
-	      });
-	    }
-	  };
-	
-	}
-	
-	// -------------------------- bridget -------------------------- //
-	
-	/**
-	 * converts a Prototypical class into a proper jQuery plugin
-	 *   the class must have a ._init method
-	 * @param {String} namespace - plugin name, used in $().pluginName
-	 * @param {Function} PluginClass - constructor class
-	 */
-	$.bridget = function( namespace, PluginClass ) {
-	  addOptionMethod( PluginClass );
-	  bridge( namespace, PluginClass );
-	};
-	
-	return $.bridget;
-	
-	}
-	
-	// transport
-	if ( true ) {
-	  // AMD
-	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(6) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (defineBridget), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else if ( typeof exports === 'object' ) {
-	  defineBridget( require('jquery') );
-	} else {
-	  // get jquery from browser global
-	  defineBridget( window.jQuery );
-	}
-	
-	})( window );
-
 
 /***/ },
 /* 11 */

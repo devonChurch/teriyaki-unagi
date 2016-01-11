@@ -1,6 +1,6 @@
 const $ = require('jquery');
 require('jquery-bridget');
-const lightbox = require('./lightbox');
+const TeriyakiUnagi = require('./teriyaki-unagi');
 const Masonry = require('masonry-layout');
 
 const Article = class {
@@ -27,7 +27,7 @@ const Article = class {
             // article expanding from that particular location. If no positioning
             // reference is passed through then the light box will expand from
             // the window center.
-            lightbox.expand($article);
+            TeriyakiUnagi.expand($article);
             this.addContent();
 
         });
@@ -55,7 +55,7 @@ const Article = class {
         // Add content to the light box in whatever way you see fit. Target the
         // light box content wrapper for easy HTML injection.
 
-        // lightbox.content.html('<h2>Put your HTML content in here</h2>');
+        // TeriyakiUnagi.content.html('<h2>Put your HTML content in here</h2>');
 
     }
 
