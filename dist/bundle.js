@@ -70,7 +70,7 @@
 	
 	var $ = __webpack_require__(6);
 	__webpack_require__(7);
-	var Lightbox = __webpack_require__(8);
+	var TeriyakiUnagi = __webpack_require__(8);
 	var Masonry = __webpack_require__(11);
 	
 	var Article = (function () {
@@ -100,7 +100,7 @@
 	                // article expanding from that particular location. If no positioning
 	                // reference is passed through then the light box will expand from
 	                // the window center.
-	                Lightbox.expand($article);
+	                TeriyakiUnagi.expand($article);
 	                _this.addContent();
 	            });
 	        }
@@ -127,7 +127,7 @@
 	            // Add content to the light box in whatever way you see fit. Target the
 	            // light box content wrapper for easy HTML injection.
 	
-	            // Lightbox.content.html('<h2>Put your HTML content in here</h2>');
+	            // TeriyakiUnagi.content.html('<h2>Put your HTML content in here</h2>');
 	
 	        }
 	    }]);
@@ -9509,11 +9509,12 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	var $ = __webpack_require__(6);
+	// Only pull in TweenMax and not the whole Greenock platform (which is HUGE!).
 	__webpack_require__(9); /* global TweenMax, Power4 */
 	
-	var Lightbox = (function () {
-	    function Lightbox() {
-	        _classCallCheck(this, Lightbox);
+	var TeriyakiUnagi = (function () {
+	    function TeriyakiUnagi() {
+	        _classCallCheck(this, TeriyakiUnagi);
 	
 	        this.$window = $(window);
 	        this.$body = $('body');
@@ -9525,7 +9526,7 @@
 	        this.$article = null; // Retrieved via this.expand();
 	    }
 	
-	    _createClass(Lightbox, [{
+	    _createClass(TeriyakiUnagi, [{
 	        key: 'listenersOn',
 	        value: function listenersOn() {
 	            var _this = this;
@@ -9714,10 +9715,10 @@
 	        }
 	    }]);
 	
-	    return Lightbox;
+	    return TeriyakiUnagi;
 	})();
 	
-	module.exports = new Lightbox();
+	module.exports = new TeriyakiUnagi();
 
 /***/ },
 /* 9 */
